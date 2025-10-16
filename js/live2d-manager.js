@@ -7,11 +7,14 @@ export async function setupLive2D(app) {
     app.stage.addChild(model);
 
     function onResize() {
-        // ----- 修改點：使用 model.internalModel 的原始尺寸進行計算 -----
+        // ----- 修改點：改用 app.screen 的尺寸來進行計算，確保在所有設備上都精確 -----
+        const screenWidth = app.screen.width;
+        const screenHeight = app.screen.height;
+
         // 計算一個適合螢幕的基礎大小
         let scale = Math.min(
-            window.innerWidth / model.internalModel.width * 0.8,
-            window.innerHeight / model.internalModel.height * 0.8
+            screenWidth / model.internalModel.width * 0.8,
+            screenHeight / model.internalModel.height * 0.8
         );
         // ----- 修改結束 -----
 
@@ -22,9 +25,11 @@ export async function setupLive2D(app) {
         // 將模型的錨點（定位點）設定為左下角
         model.anchor.set(0, 1);
 
+        // ----- 修改點：改用 screenHeight 來定位 -----
         // 將模型定位到螢幕的左下角 (並增加 20px 的邊距)
         const margin = 20;
-        model.position.set(margin, window.innerHeight - margin);
+        model.position.set(margin, screenHeight - margin);
+        // ----- 修改結束 -----
     }
 
     // 在程式初始化時，和視窗尺寸變動時，都呼叫 onResize
