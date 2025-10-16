@@ -1,0 +1,112 @@
+/* 網頁基本設定 */
+body { 
+    margin: 0; 
+    background-color: #1a1a1a;
+    overflow: hidden; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Live2D 模型的 Canvas 設定 */
+#live2d-canvas { 
+    display: block; 
+    width: 100vw; 
+    height: 100vh; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+}
+
+/* 功能選單的樣式 */
+#action-menu {
+    position: fixed;
+    bottom: 180px;
+    left: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 100;
+    opacity: 0;
+    transform: translateX(-20px);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#action-menu.visible {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+.menu-icon {
+    width: 40px;
+    height: 40px;
+    background-color: rgba(0, 123, 255, 0.3);
+    border: 1px solid rgba(0, 195, 255, 0.7);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 150, 255, 0.5);
+    transition: background-color 0.3s, box-shadow 0.3s, border-color 0.3s;
+}
+
+.menu-icon:hover {
+    background-color: rgba(0, 150, 255, 0.6);
+    box-shadow: 0 0 20px rgba(0, 200, 255, 0.8);
+}
+
+.menu-icon.active {
+    background-color: rgba(138, 43, 226, 0.4);
+    border-color: rgba(198, 113, 255, 0.8);
+    box-shadow: 0 0 20px rgba(178, 103, 255, 0.8);
+}
+
+/* ----- 修改點：新增 icon 處於 active 狀態下的 hover 效果 ----- */
+.menu-icon.active:hover {
+    background-color: rgba(138, 43, 226, 0.7);      /* 更亮的紫色背景 */
+    box-shadow: 0 0 25px rgba(228, 153, 255, 0.9);  /* 更強的紫色光暈 */
+}
+
+/* 對話視窗的樣式 */
+#dialogue-box {
+    position: fixed;
+    bottom: 40px;
+    left: 200px;
+    width: 300px;
+    height: 120px;
+    z-index: 100;
+    background-color: rgba(0, 123, 255, 0.15);
+    border: 1px solid rgba(0, 195, 255, 0.7);
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 150, 255, 0.5), inset 0 0 10px rgba(0, 150, 255, 0.3);
+    backdrop-filter: blur(5px);
+    color: #cceeff;
+    padding: 20px;
+    font-size: 16px;
+    line-height: 1.6;
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.7);
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+#dialogue-box.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* 關閉按鈕的樣式 */
+#close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    color: rgba(204, 238, 255, 0.5);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+#close-button:hover {
+    color: rgba(204, 238, 255, 1);
+}
