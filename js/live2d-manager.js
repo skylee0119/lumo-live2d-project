@@ -6,13 +6,14 @@ export async function setupLive2D(app) {
     const model = await PIXI.live2d.Live2DModel.from(modelPath);
     app.stage.addChild(model);
 
-    // ----- 修改點：將尺寸與位置設定的邏輯打包成一個函式 -----
     function onResize() {
+        // ----- 修改點：使用 model.internalModel 的原始尺寸進行計算 -----
         // 計算一個適合螢幕的基礎大小
         let scale = Math.min(
-            window.innerWidth / model.width * 0.8,
-            window.innerHeight / model.height * 0.8
+            window.innerWidth / model.internalModel.width * 0.8,
+            window.innerHeight / model.internalModel.height * 0.8
         );
+        // ----- 修改結束 -----
 
         // 將基礎大小再縮小為 20%
         scale *= 0.2;
@@ -25,15 +26,10 @@ export async function setupLive2D(app) {
         const margin = 20;
         model.position.set(margin, window.innerHeight - margin);
     }
-    // ----- 修改結束 -----
 
-    // ----- 修改點：在程式初始化時，和視窗尺寸變動時，都呼叫 onResize -----
-    // 1. 立即執行一次，設定初始位置
+    // 在程式初始化時，和視窗尺寸變動時，都呼叫 onResize
     onResize();
-
-    // 2. 監聽視窗的 resize 事件
     window.addEventListener('resize', onResize);
-    // ----- 修改結束 -----
     
     // 平滑追蹤邏輯 (與之前相同)
     let targetParamX = 0, targetParamY = 0, currentParamX = 0, currentParamY = 0;
