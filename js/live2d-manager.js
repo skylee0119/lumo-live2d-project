@@ -6,15 +6,36 @@ export async function setupLive2D(app) {
     const model = await PIXI.live2d.Live2DModel.from(modelPath);
     app.stage.addChild(model);
 
-    // 設定大小和位置
-    let scale = Math.min(window.innerWidth / model.width * 0.8, window.innerHeight / model.height * 0.8);
-    scale *= 0.2;
-    model.scale.set(scale);
-    model.anchor.set(0, 1);
-    const margin = 20;
-    model.position.set(margin, window.innerHeight - margin);
+    // ----- 修改點：將尺寸與位置設定的邏輯打包成一個函式 -----
+    function onResize() {
+        // 計算一個適合螢幕的基礎大小
+        let scale = Math.min(
+            window.innerWidth / model.width * 0.8,
+            window.innerHeight / model.height * 0.8
+        );
+
+        // 將基礎大小再縮小為 20%
+        scale *= 0.2;
+        model.scale.set(scale);
+
+        // 將模型的錨點（定位點）設定為左下角
+        model.anchor.set(0, 1);
+
+        // 將模型定位到螢幕的左下角 (並增加 20px 的邊距)
+        const margin = 20;
+        model.position.set(margin, window.innerHeight - margin);
+    }
+    // ----- 修改結束 -----
+
+    // ----- 修改點：在程式初始化時，和視窗尺寸變動時，都呼叫 onResize -----
+    // 1. 立即執行一次，設定初始位置
+    onResize();
+
+    // 2. 監聽視窗的 resize 事件
+    window.addEventListener('resize', onResize);
+    // ----- 修改結束 -----
     
-    // 平滑追蹤邏輯
+    // 平滑追蹤邏輯 (與之前相同)
     let targetParamX = 0, targetParamY = 0, currentParamX = 0, currentParamY = 0;
     const easingFactor = 0.05;
 
@@ -37,6 +58,5 @@ export async function setupLive2D(app) {
 
     console.log("Live2D Manager: 模型載入成功！平滑追蹤已啟用。");
 
-    // 將 model 物件回傳，給其他模組使用
     return model;
 }
